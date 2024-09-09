@@ -15,20 +15,14 @@ func main() {
 
 	logLevel := config.AppConfig.Logger.Level
 	if logLevel == "" {
-		logLevel = utils.LoggerConfig{}.Level
+		logLevel = "info"
 	}
 
 	// Initialize the logger with the configuration
-    config.InitializeLogger(logLevel)
+    utils.InitializeLogger(logLevel)
 
     // Get the global logger
-    logger := config.Logger
-
-    // Example logging
-    logger.Debug("This is a debug message.")
-    logger.Info("This is an informational message.")
-    logger.Warn("This is a warning message.")
-    logger.Error("This is an error message.")
+    logger := utils.Logger
 
     err := doSomething()
     if err != nil {
