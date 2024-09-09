@@ -6,11 +6,34 @@ import (
 	"time"
 
 	"github.com/KCKT0112/GoWeb/app/config"
+	"github.com/KCKT0112/GoWeb/app/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	config.InitConfig()
+
+	logLevel := config.AppConfig.Logger.Level
+	if logLevel == "" {
+		logLevel = utils.LoggerConfig{}.Level
+	}
+
+	// Initialize the logger with the configuration
+    config.InitializeLogger(logLevel)
+
+    // Get the global logger
+    logger := config.Logger
+
+    // Example logging
+    logger.Debug("This is a debug message.")
+    logger.Info("This is an informational message.")
+    logger.Warn("This is a warning message.")
+    logger.Error("This is an error message.")
+
+    err := doSomething()
+    if err != nil {
+        logger.Error("Error occurred", zap.Error(err))
+    }
 
 	r := gin.Default()
 

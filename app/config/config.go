@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
+	Logger   LoggerConfig
 }
 
 type ServerConfig struct {
@@ -19,6 +20,10 @@ type DatabaseConfig struct {
 	Host     string
 	User     string
 	Password string
+}
+
+type LoggerConfig struct {
+	Level string
 }
 
 var AppConfig *Config
