@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	"github.com/gin-gonic/gin"
+
 	"github.com/KCKT0112/GoWeb/app/config"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -19,7 +20,12 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("it's working! %v", time.Now()))
 	})
 
-	r.Run(fmt.Sprintf(":%d", config.AppConfig.Server.Port ?: 8083))
+	port := config.AppConfig.Server.Port
+	if port == 0 {
+		port = 8083 // Default port
+	}
+
+	r.Run(fmt.Sprintf(":%d", port))
 }
 
 func MiddWare() gin.HandlerFunc {
