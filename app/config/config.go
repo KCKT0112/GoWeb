@@ -28,7 +28,7 @@ type LoggerConfig struct {
 
 var AppConfig *Config
 
-// 初始化配置
+// InitConfig
 func InitConfig() {
 	viper.SetConfigName("config")       // Config file name
 	viper.SetConfigType("yaml")         // Config file type
