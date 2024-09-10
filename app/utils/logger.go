@@ -5,21 +5,22 @@ import (
 	"strings"
 	"time"
 
+	"github.com/KCKT0112/GoWeb/app/config"
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-// LoggerConfig holds configuration for the logger
-type LoggerConfig struct {
-	Level string
-}
-
 // Global logger
 var Logger *zap.Logger
 
 // InitializeLogger initializes the zap logger based on LoggerConfig
-func InitializeLogger(config LoggerConfig) {
+func InitializeLogger() {
+	configLevel := config.AppConfig.Logger.Level
+	if configLevel == "" {
+		configLevel = "info"
+	}
+
 	logDir := "log"
 
 	// Ensure the log directory exists
@@ -46,7 +47,7 @@ func InitializeLogger(config LoggerConfig) {
 
 	// Set the log level based on the configuration
 	var level zapcore.Level
-	switch strings.ToLower(config.Level) {
+	switch strings.ToLower(configLevel) {
 	case "debug":
 		level = zapcore.DebugLevel
 	case "info":
@@ -73,5 +74,5 @@ func InitializeLogger(config LoggerConfig) {
 	)
 
 	// Create the logger
-	Logger = zap.New(core)
+	Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 }

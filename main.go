@@ -8,26 +8,22 @@ import (
 	"github.com/KCKT0112/GoWeb/app/config"
 	"github.com/KCKT0112/GoWeb/app/utils"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func main() {
 	config.InitConfig()
 
-	logLevel := config.AppConfig.Logger.Level
-	if logLevel == "" {
-		logLevel = "info"
+	port := config.AppConfig.Server.Port
+	if port == 0 {
+		port = 8083 // Default port
 	}
 
 	// Initialize the logger with the configuration
-    utils.InitializeLogger(logLevel)
+	utils.InitializeLogger()
 
-    // Get the global logger
-    logger := utils.Logger
-
-    err := doSomething()
-    if err != nil {
-        logger.Error("Error occurred", zap.Error(err))
-    }
+	logger := utils.Logger
+	logger.Info("Starting server", zap.String("port", fmt.Sprintf("%d", port)))
 
 	r := gin.Default()
 
@@ -36,11 +32,6 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, fmt.Sprintf("it's working! %v", time.Now()))
 	})
-
-	port := config.AppConfig.Server.Port
-	if port == 0 {
-		port = 8083 // Default port
-	}
 
 	r.Run(fmt.Sprintf(":%d", port))
 }
