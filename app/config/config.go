@@ -30,9 +30,9 @@ var AppConfig *Config
 
 // 初始化配置
 func InitConfig() {
-	viper.SetConfigName("config")       // 配置文件名（不包括扩展名）
-	viper.SetConfigType("yaml")         // 配置文件类型
-	viper.AddConfigPath("./app/config") // 配置文件路径
+	viper.SetConfigName("config")       // Config file name
+	viper.SetConfigType("yaml")         // Config file type
+	viper.AddConfigPath("./app/config") // Config file path
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Error reading config file, %s", err)
